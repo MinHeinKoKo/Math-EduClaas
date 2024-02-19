@@ -58,79 +58,73 @@ class Level1 : AppCompatActivity() {
 
 
     fun NextQuestion(cal:String){
-        a = random.nextInt(6,12)
-        b=  random.nextInt(1,5)
-        questionTextView!!.text= "$a $cal $b"
-        indexOfCorrectAnswer = random.nextInt(4)
+        if (totalQuestions <= 10) {
+            a = random.nextInt(6, 12)
+            b = random.nextInt(1, 5)
+            questionTextView!!.text = "$a $cal $b"
+            indexOfCorrectAnswer = random.nextInt(4)
 
-        answers.clear()
+            answers.clear()
 
-        println(questionTextView);
+            for (i in 0..3) {
+                if (indexOfCorrectAnswer == i) {
 
-        for(i in 0..3){
-            if (indexOfCorrectAnswer == i){
-
-                when(cal) {
-                    "+" -> {
-                        answers.add(a + b)
-                    }
-                    "-" -> {
-                        answers.add(a - b)
-                    }
-                    "*" -> {
-                        answers.add(a * b)
-                    }
-                    "/" -> {
-                        try {
-                            answers.add(a / b)
+                    when (cal) {
+                        "+" -> {
+                            answers.add(a + b)
                         }
 
-                        catch (e:Exception){
-                            e.printStackTrace()
+                        "-" -> {
+                            answers.add(a - b)
+                        }
+
+                        "*" -> {
+                            answers.add(a * b)
+                        }
+
+                        "/" -> {
+                            try {
+                                answers.add(a / b)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                     }
+                } else {
+                    var wrongAnswer = random.nextInt(15)
+                    try {
+                        while (
+                            wrongAnswer == a + b
+                            || wrongAnswer == a - b
+                            || wrongAnswer == a * b
+                            || wrongAnswer == a / b
+                        ) {
+                            wrongAnswer = random.nextInt(15)
+                        }
+                        answers.add(wrongAnswer)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
                 }
             }
 
-            else {
-                var wrongAnswer = random.nextInt(15)
-                try{
-                    while (
-                        wrongAnswer == a+b
-                        || wrongAnswer == a-b
-                        || wrongAnswer == a*b
-                        || wrongAnswer == a/b
-                    ){
-                        wrongAnswer = random.nextInt(15)
-                    }
-                    answers.add(wrongAnswer)
-                }
-                catch (e:Exception){
-                    e.printStackTrace()
-                }
+            try {
+                button0!!.text = "${answers[0]}"
+                button1!!.text = "${answers[1]}"
+                button2!!.text = "${answers[2]}"
+                button3!!.text = "${answers[3]}"
 
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        }
-
-        try{
-            button0!!.text = "${answers[0]}"
-            button1!!.text = "${answers[1]}"
-            button2!!.text = "${answers[2]}"
-            button3!!.text = "${answers[3]}"
 
         }
-        catch (e:Exception){
-            e.printStackTrace()
-        }
-
-
     }
 
     fun optionSelect(view:View?) {
         totalQuestions in 1 until 10
-        if(totalQuestions<=10){
-
-
+        if(totalQuestions <= 10){
 
             if (indexOfCorrectAnswer.toString() == view!!.tag.toString()) {
                 points++
@@ -141,35 +135,39 @@ class Level1 : AppCompatActivity() {
                 alertTextView!!.text = "Wrong"
             }
             scoreTextView!!.text = "$points/$totalQuestions"
-            NextQuestion(cals)
-            totalQuestions++
-            countDownTimer!!.start()
 
-        }
+            if (totalQuestions <10){
+                NextQuestion(cals)
+                totalQuestions++
+                countDownTimer!!.start()
+            }else{
+                countDownTimer!!.cancel()
+                openDialog()
+            }
 
-        else{
+
+        } else{
             openDialog()
         }
-
-
-
 
     }
 
 
     private fun start() {
-        NextQuestion(cals)
-        countDownTimer = object : CountDownTimer(20000,1000){
-            override fun onTick(millisUntilFinished: Long) {
-                timeTextView!!.text = (millisUntilFinished / 1000).toString() + "s"
-            }
+        if (totalQuestions <= 10){
+            NextQuestion(cals)
+            countDownTimer = object : CountDownTimer(20000,1000){
+                override fun onTick(millisUntilFinished: Long) {
+                    timeTextView!!.text = (millisUntilFinished / 1000).toString() + "s"
+                }
 
-            override fun onFinish() {
-                timeTextView!!.text = "Times' Up!"
-                openDialog()
-            }
+                override fun onFinish() {
+                    timeTextView!!.text = "Times' Up!"
+                    openDialog()
+                }
 
-        }.start()
+            }.start()
+        }
     }
 
 

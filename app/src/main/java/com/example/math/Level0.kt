@@ -37,98 +37,120 @@ class Level0 : AppCompatActivity() {
         val calInt = intent.getStringExtra("cals")
         cals = calInt !!
 
+        questionTextViewL0 = findViewById(R.id.questionTextView)
+        alertTextViewL0 = findViewById(R.id.alertTextView)
+        scoreTextViewL0 = findViewById(R.id.scoreTextView)
+
         button5 =findViewById(R.id.button0)
         button6 =findViewById(R.id.button1)
         button7 =findViewById(R.id.button2)
         button8 =findViewById(R.id.button3)
+
+        NextQuestion(cals)
     }
 
-    fun NextQuestion(cal:String) {
-        a = random.nextInt(6 , 12)
-        b = random.nextInt(1,5)
-        questionTextViewL0!!.text  = "$a $cal $b"
-        indexOfCorrectAnswer = random.nextInt(4)
+    fun NextQuestion(cal: String){
+        if (totalQuestions <= 10) {
 
-        answers.clear()
+            a = random.nextInt(6, 12)
+            b = random.nextInt(1, 5)
+            questionTextViewL0!!.text = "$a $cal $b"
+            indexOfCorrectAnswer = random.nextInt(4)
 
-        for (i in 0..3){
-            if (indexOfCorrectAnswer == i) {
-                when(cals){
-                    "+" -> {
-                        answers.add(a + b)
-                    }
-                    "-" -> {
-                        answers.add(a - b)
-                    }
-                    "*" -> {
-                        answers.add(a * b)
-                    }
-                    "/" -> {
-                        try {
-                            answers.add(a / b)
+            answers.clear()
+
+            for (i in 0..3) {
+                if (indexOfCorrectAnswer == i) {
+                    when (cal) {
+                        "+" -> {
+                            answers.add(a + b)
                         }
 
-                        catch (e:Exception){
-                            e.printStackTrace()
+                        "-" -> {
+                            answers.add(a - b)
+                        }
+
+                        "*" -> {
+                            answers.add(a * b)
+                        }
+
+                        "/" -> {
+                            try {
+                                answers.add(a / b)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                     }
-                }
-            } else{
-                var wrongAnswer = random.nextInt(15)
-                try {
-                    while (
-                        wrongAnswer == a+b ||
-                        wrongAnswer == a-b
-                        || wrongAnswer == a*b
-                        || wrongAnswer == a/b
-                    ) {
-                        wrongAnswer = random.nextInt(15)
+                } else {
+                    var wrongAnswer = random.nextInt(15)
+                    try {
+                        while (
+                            wrongAnswer == a + b
+                            || wrongAnswer == a - b
+                            || wrongAnswer == a * b
+                            || wrongAnswer == a / b
+                        ) {
+                            wrongAnswer = random.nextInt(15)
+                        }
+                        answers.add(wrongAnswer)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                    answers.add(wrongAnswer)
-                }catch (e: Exception){
-                    e.printStackTrace()
                 }
             }
+
+            try {
+                button5!!.text = "${answers[0]}"
+                button6!!.text = "${answers[1]}"
+                button7!!.text = "${answers[2]}"
+                button8!!.text = "${answers[3]}"
+                println(totalQuestions);
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
+    }
 
-        fun optionSelect (view: View?) {
-            totalQuestions in 1 until  10
+    fun optionSelect(view: View?) {
+        if (totalQuestions <= 10){
+            if (indexOfCorrectAnswer.toString() == view!!.tag.toString()){
+                points ++
+                alertTextViewL0!!.text = "Good Job"
+            }else{
+                alertTextViewL0!!.text = "Wrong 😞😞"
+            }
 
-            if(totalQuestions<=10){
+            scoreTextViewL0!!.text = "$points/$totalQuestions"
 
-                if (indexOfCorrectAnswer.toString() == view!!.tag.toString()) {
-                    points++
-                    alertTextViewL0!!.text = "Correct"
-                }
-
-                else {
-                    alertTextViewL0!!.text = "Wrong"
-                }
-                scoreTextViewL0!!.text = "$points/$totalQuestions"
-                NextQuestion(cals)
+            if (totalQuestions <10){
                 totalQuestions++
-
+                NextQuestion(cals)
+            }else{
+                openDialog()
             }
 
-            else{
-                System.out.println("Error")
-            }
+        }else{
+            openDialog()
         }
-        //private fun openDialog() {
-//            val inflate =LayoutInflater.from(this)
-//            val winDialog = inflate.inflate(R.layout.activity_total_score,null)
-//            finalScoreTextView =winDialog.findViewById(R.id.FinalScoreTextView)
-//            val chooseLevel = winDialog.findViewById<Button>(R.id.ChooseLevel)
-//            chooseLevel.setOnClickListener {
-//                val intentChooseLevel = Intent (this,ChooseLevel::class.java)
-//                startActivity(intentChooseLevel)
-//            }
-//            val dialog = AlertDialog.Builder(this)
-//            dialog.setCancelable(false)
-//            dialog.setView(winDialog)
-//            finalScoreTextView!!.text = "$points/$totalQuestions"
-//            val showDialog = dialog.create()
-//            showDialog.show()
-        //}
+    }
+
+    private fun openDialog() {
+        val inflate = LayoutInflater.from(this)
+        val windDialog = inflate.inflate(R.layout.activity_total_score , null)
+        finalScoreTextView = windDialog.findViewById(R.id.FinalScoreTextView)
+        val chooseLevel = windDialog.findViewById<Button>(R.id.ChooseLevel)
+
+        chooseLevel.setOnClickListener {
+            val intentChooseLevel = Intent (this,ChooseLevel::class.java)
+            startActivity(intentChooseLevel)
+        }
+        val dialog = AlertDialog.Builder(this)
+        dialog.setCancelable(false)
+        dialog.setView(windDialog)
+        finalScoreTextView!!.text = "$points/$totalQuestions"
+        val showDialog = dialog.create()
+        showDialog.show()
+
     }
 }
