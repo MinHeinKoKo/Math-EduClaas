@@ -39,6 +39,9 @@ class Level1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_level1)
 
+        val calInt = intent.getStringExtra("cals")
+        cals = calInt !!
+
         timeTextView = findViewById(R.id.timeTextView)
         questionTextView = findViewById(R.id.questionTextView)
         alertTextView = findViewById(R.id.alertTextView)
@@ -62,6 +65,7 @@ class Level1 : AppCompatActivity() {
 
         answers.clear()
 
+        println(questionTextView);
 
         for(i in 0..3){
             if (indexOfCorrectAnswer == i){
