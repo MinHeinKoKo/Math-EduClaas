@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import kotlin.random.Random
 
-class Level1 : AppCompatActivity() {
+class Level2 : AppCompatActivity() {
 
     var timeTextView : TextView? =null
     var questionTextView : TextView? =null
@@ -34,34 +34,31 @@ class Level1 : AppCompatActivity() {
     var cals = ""
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_level1)
+        setContentView(R.layout.activity_level2)
 
         val calInt = intent.getStringExtra("cals")
         cals = calInt !!
 
-        timeTextView = findViewById(R.id.timeTextView)
-        questionTextView = findViewById(R.id.questionTextView)
-        alertTextView = findViewById(R.id.alertTextView)
-        scoreTextView = findViewById(R.id.scoreTextView)
+        timeTextView = findViewById(R.id.TimeTextView2)
+        questionTextView = findViewById(R.id.QuestionTextView2)
+        alertTextView = findViewById(R.id.AlertTextView2)
+        scoreTextView = findViewById(R.id.ScoreTextView2)
 
-        button0 =findViewById(R.id.button0)
-        button1 =findViewById(R.id.button1)
-        button2 =findViewById(R.id.button2)
-        button3 =findViewById(R.id.button3)
+        button0 =findViewById(R.id.button)
+        button1 =findViewById(R.id.button4)
+        button2 =findViewById(R.id.button9)
+        button3 =findViewById(R.id.button10)
 
         start()
-
     }
 
-
-    fun NextQuestion(cal:String){
+    fun NextQuestion(cals: String){
         if (totalQuestions <= 10) {
             a = random.nextInt(6, 12)
             b = random.nextInt(1, 5)
-            questionTextView!!.text = "$a $cal $b"
+            questionTextView!!.text = "$a $cals $b"
             indexOfCorrectAnswer = random.nextInt(4)
 
             answers.clear()
@@ -69,7 +66,7 @@ class Level1 : AppCompatActivity() {
             for (i in 0..3) {
                 if (indexOfCorrectAnswer == i) {
 
-                    when (cal) {
+                    when (cals) {
                         "+" -> {
                             answers.add(a + b)
                         }
@@ -122,57 +119,48 @@ class Level1 : AppCompatActivity() {
         }
     }
 
-    fun optionSelect(view:View?) {
-        totalQuestions in 1 until 10
-        if(totalQuestions <= 10){
-
+    fun optionSelect(view: View?){
+        if (totalQuestions <= 10) {
+            println("answer : "+ indexOfCorrectAnswer.toString() + "tags : " + view!!.tag.toString());
             if (indexOfCorrectAnswer.toString() == view!!.tag.toString()) {
                 points++
                 alertTextView!!.text = "Correct"
-            }
-
-            else {
+            } else {
                 alertTextView!!.text = "Wrong"
             }
             scoreTextView!!.text = "$points/$totalQuestions"
 
-            if (totalQuestions <10){
+            if (totalQuestions < 10) {
                 NextQuestion(cals)
                 totalQuestions++
                 countDownTimer!!.start()
-            }else{
+            } else {
                 countDownTimer!!.cancel()
                 openDialog()
             }
-
-
-        } else{
+        } else {
             openDialog()
         }
-
     }
 
-
-    private fun start() {
+    fun start(){
         if (totalQuestions <= 10){
             NextQuestion(cals)
-            countDownTimer = object : CountDownTimer(20000,1000){
+            countDownTimer = object : CountDownTimer(20000 , 1000){
                 override fun onTick(millisUntilFinished: Long) {
-                    timeTextView!!.text = (millisUntilFinished / 1000).toString() + "s"
+                    timeTextView!!.text = (millisUntilFinished /1000).toString()
                 }
 
                 override fun onFinish() {
                     timeTextView!!.text = "Times' Up!"
                     openDialog()
                 }
-
             }.start()
         }
     }
 
-
     private fun openDialog() {
-        val inflate =LayoutInflater.from(this)
+        val inflate = LayoutInflater.from(this)
         val winDialog = inflate.inflate(R.layout.activity_total_score,null)
         finalScoreTextView =winDialog.findViewById(R.id.FinalScoreTextView)
         val chooseLevel = winDialog.findViewById<Button>(R.id.ChooseLevel)
@@ -187,5 +175,4 @@ class Level1 : AppCompatActivity() {
         val showDialog = dialog.create()
         showDialog.show()
     }
-
 }
