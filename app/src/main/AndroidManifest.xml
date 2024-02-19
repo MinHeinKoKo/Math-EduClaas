@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Math"
         tools:targetApi="31">
         <activity
+            android:name=".Level1"
+            android:exported="false" />
+        <activity
             android:name=".TotalScore"
             android:exported="false" />
         <activity
