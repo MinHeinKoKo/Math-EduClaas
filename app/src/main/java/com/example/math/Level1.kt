@@ -148,12 +148,9 @@ class Level1 : AppCompatActivity() {
                 countDownTimer!!.cancel()
                 openDialog()
             }
-
-
         } else{
             openDialog()
         }
-
     }
 
 
