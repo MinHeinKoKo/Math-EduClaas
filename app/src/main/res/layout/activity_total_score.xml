@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/background"
     tools:context=".TotalScore">
 
     <LinearLayout
@@ -20,20 +21,30 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your Score! "
+            android:text="Here is result."
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="#000080"
             android:textSize="36sp" />
 
         <TextView
-            android:id="@+id/FinalScoreTextView"
+            android:id="@+id/FinalScoreTextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="27dp"
             android:layout_marginBottom="-13dp"
-            android:background="#0e8c80"
-            android:text="0/10"
+            android:text="Marks     :  0"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <TextView
+            android:id="@+id/FinalScoreTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="27dp"
+            android:layout_marginBottom="-13dp"
+            android:text="Questions :  0"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 

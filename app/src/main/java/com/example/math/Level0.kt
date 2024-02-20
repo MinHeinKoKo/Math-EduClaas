@@ -15,7 +15,8 @@ class Level0 : AppCompatActivity() {
     var questionTextViewL0 : TextView ?= null
     var alertTextViewL0 : TextView ?= null
     var scoreTextViewL0 : TextView ?= null
-    var finalScoreTextView : TextView? =null
+    var finalScoreTextView1 : TextView? =null
+    var finalScoreTextView2 : TextView? =null
     var button5 : Button? =null
     var button6 : Button? =null
     var button7 : Button? =null
@@ -138,7 +139,8 @@ class Level0 : AppCompatActivity() {
     private fun openDialog() {
         val inflate = LayoutInflater.from(this)
         val windDialog = inflate.inflate(R.layout.activity_total_score , null)
-        finalScoreTextView = windDialog.findViewById(R.id.FinalScoreTextView)
+        finalScoreTextView1 =windDialog.findViewById(R.id.FinalScoreTextView1)
+        finalScoreTextView2 = windDialog.findViewById(R.id.FinalScoreTextView2)
         val chooseLevel = windDialog.findViewById<Button>(R.id.ChooseLevel)
 
         chooseLevel.setOnClickListener {
@@ -148,7 +150,8 @@ class Level0 : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
         dialog.setCancelable(false)
         dialog.setView(windDialog)
-        finalScoreTextView!!.text = "$points/$totalQuestions"
+        finalScoreTextView1!!.text = "Marks     : $points"
+        finalScoreTextView2!!.text = "Questions : $totalQuestions"
         val showDialog = dialog.create()
         showDialog.show()
 

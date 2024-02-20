@@ -7,6 +7,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import kotlin.random.Random
@@ -17,7 +18,9 @@ class Level1 : AppCompatActivity() {
     var questionTextView : TextView? =null
     var alertTextView : TextView? =null
     var scoreTextView : TextView? =null
-    var finalScoreTextView : TextView? =null
+    var finalScoreTextView1 : TextView? =null
+    var finalScoreTextView2 : TextView? =null
+    var progressBar : ProgressBar? = null
     var button0 : Button? =null
     var button1 : Button? =null
     var button2 : Button? =null
@@ -42,10 +45,11 @@ class Level1 : AppCompatActivity() {
         val calInt = intent.getStringExtra("cals")
         cals = calInt !!
 
-        timeTextView = findViewById(R.id.timeTextView)
+//        timeTextView = findViewById(R.id.timeTextView)
         questionTextView = findViewById(R.id.questionTextView)
         alertTextView = findViewById(R.id.alertTextView)
         scoreTextView = findViewById(R.id.scoreTextView)
+        progressBar = findViewById(R.id.progressBar)
 
         button0 =findViewById(R.id.button0)
         button1 =findViewById(R.id.button1)
@@ -128,11 +132,11 @@ class Level1 : AppCompatActivity() {
 
             if (indexOfCorrectAnswer.toString() == view!!.tag.toString()) {
                 points++
-                alertTextView!!.text = "Correct"
+                alertTextView!!.text = "🍾 Good Job"
             }
 
             else {
-                alertTextView!!.text = "Wrong"
+                alertTextView!!.text = "😞😞Wrong"
             }
             scoreTextView!!.text = "$points/$totalQuestions"
 
@@ -158,11 +162,13 @@ class Level1 : AppCompatActivity() {
             NextQuestion(cals)
             countDownTimer = object : CountDownTimer(20000,1000){
                 override fun onTick(millisUntilFinished: Long) {
-                    timeTextView!!.text = (millisUntilFinished / 1000).toString() + "s"
+//                    timeTextView!!.text = (millisUntilFinished / 1000).toString() + "s"
+                    val progress = (millisUntilFinished / 1000).toInt()
+                    progressBar!!.progress = progress
                 }
 
                 override fun onFinish() {
-                    timeTextView!!.text = "Times' Up!"
+//                    timeTextView!!.text = "Times' Up!"
                     openDialog()
                 }
 
@@ -174,7 +180,8 @@ class Level1 : AppCompatActivity() {
     private fun openDialog() {
         val inflate =LayoutInflater.from(this)
         val winDialog = inflate.inflate(R.layout.activity_total_score,null)
-        finalScoreTextView =winDialog.findViewById(R.id.FinalScoreTextView)
+        finalScoreTextView1 =winDialog.findViewById(R.id.FinalScoreTextView1)
+        finalScoreTextView2 = winDialog.findViewById(R.id.FinalScoreTextView2)
         val chooseLevel = winDialog.findViewById<Button>(R.id.ChooseLevel)
         chooseLevel.setOnClickListener {
             val intentChooseLevel = Intent (this,ChooseLevel::class.java)
@@ -183,7 +190,8 @@ class Level1 : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
         dialog.setCancelable(false)
         dialog.setView(winDialog)
-        finalScoreTextView!!.text = "$points/$totalQuestions"
+        finalScoreTextView1!!.text = "Marks     : $points"
+        finalScoreTextView2!!.text = "Questions : $totalQuestions"
         val showDialog = dialog.create()
         showDialog.show()
     }
