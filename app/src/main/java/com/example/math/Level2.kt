@@ -1,6 +1,7 @@
 package com.example.math
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -35,6 +36,8 @@ class Level2 : AppCompatActivity() {
     var points = 0
     var totalQuestions = 1
     var cals = ""
+
+    var applauseSound : MediaPlayer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -184,5 +187,7 @@ class Level2 : AppCompatActivity() {
         finalScoreTextView2!!.text = "Questions : $totalQuestions"
         val showDialog = dialog.create()
         showDialog.show()
+        applauseSound = MediaPlayer.create(this, R.raw.applause)
+        applauseSound?.start()
     }
 }
