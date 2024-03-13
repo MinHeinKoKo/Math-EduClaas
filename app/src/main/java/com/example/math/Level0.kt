@@ -33,6 +33,8 @@ class Level0 : AppCompatActivity() {
     var cals = ""
 
     var applauseSound : MediaPlayer? = null
+    var correctSound : MediaPlayer? = null
+    var inCorrectSound : MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,8 +123,12 @@ class Level0 : AppCompatActivity() {
             if (indexOfCorrectAnswer.toString() == view!!.tag.toString()){
                 points ++
                 alertTextViewL0!!.text = "Good Job"
+                correctSound = MediaPlayer.create(this, R.raw.correct)
+                correctSound?.start()
             }else{
                 alertTextViewL0!!.text = "Wrong 😞😞"
+                inCorrectSound = MediaPlayer.create(this, R.raw.incorrect)
+                inCorrectSound?.start()
             }
 
             scoreTextViewL0!!.text = "$points/$totalQuestions"

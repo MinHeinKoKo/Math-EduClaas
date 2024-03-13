@@ -22,6 +22,7 @@ class Level2 : AppCompatActivity() {
     var finalScoreTextView1 : TextView? =null
     var finalScoreTextView2 : TextView? =null
     var progressBar2 : ProgressBar? = null
+
     var button0 : Button? =null
     var button1 : Button? =null
     var button2 : Button? =null
@@ -38,6 +39,8 @@ class Level2 : AppCompatActivity() {
     var cals = ""
 
     var applauseSound : MediaPlayer? = null
+    var correctSound : MediaPlayer? = null
+    var inCorrectSound : MediaPlayer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +50,6 @@ class Level2 : AppCompatActivity() {
         val calInt = intent.getStringExtra("cals")
         cals = calInt !!
 
-//        timeTextView = findViewById(R.id.TimeTextView2)
         questionTextView = findViewById(R.id.QuestionTextView2)
         alertTextView = findViewById(R.id.AlertTextView2)
         scoreTextView = findViewById(R.id.ScoreTextView2)
@@ -132,10 +134,14 @@ class Level2 : AppCompatActivity() {
             if (indexOfCorrectAnswer.toString() == view!!.tag.toString()) {
                 points++
                 alertTextView!!.text = "🍾 Good Job"
+                correctSound = MediaPlayer.create(this, R.raw.correct)
+                correctSound?.start()
             }
 
             else {
                 alertTextView!!.text = "😞😞Wrong"
+                inCorrectSound = MediaPlayer.create(this, R.raw.incorrect)
+                inCorrectSound?.start()
             }
             scoreTextView!!.text = "$points/$totalQuestions"
 
