@@ -1,6 +1,7 @@
 package com.example.math
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,6 +31,10 @@ class Level0 : AppCompatActivity() {
     var points = 0
     var totalQuestions = 1
     var cals = ""
+
+    var applauseSound : MediaPlayer? = null
+    var correctSound : MediaPlayer? = null
+    var inCorrectSound : MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,8 +123,12 @@ class Level0 : AppCompatActivity() {
             if (indexOfCorrectAnswer.toString() == view!!.tag.toString()){
                 points ++
                 alertTextViewL0!!.text = "Good Job"
+                correctSound = MediaPlayer.create(this, R.raw.correct)
+                correctSound?.start()
             }else{
                 alertTextViewL0!!.text = "Wrong 😞😞"
+                inCorrectSound = MediaPlayer.create(this, R.raw.incorrect)
+                inCorrectSound?.start()
             }
 
             scoreTextViewL0!!.text = "$points/$totalQuestions"
@@ -154,6 +163,7 @@ class Level0 : AppCompatActivity() {
         finalScoreTextView2!!.text = "Questions : $totalQuestions"
         val showDialog = dialog.create()
         showDialog.show()
-
+        applauseSound = MediaPlayer.create(this, R.raw.applause)
+        applauseSound?.start()
     }
 }
